@@ -38,6 +38,11 @@
           <p>你已经修复了 <b>2 个</b> 常见错误，继续保持节奏。</p>
         </article>
 
+        <article class="calibration-card">
+          <span class="calibration-icon">✦</span>
+          <div><p class="eyebrow">你的专属学习画像</p><b id="studentProfileSignal">已从 36 份作业中学习</b><p>每次扫描都会补全你的书写、解题步骤和知识点证据，让定位更准确。</p></div>
+        </article>
+
         <section class="section-heading">
           <div><p class="eyebrow">今日建议</p><h2>先补一次函数</h2></div>
           <span class="time-pill">约 15 分钟</span>
@@ -111,12 +116,24 @@
 
       <section class="screen student-screen" data-screen="diagnosis" aria-label="学习诊断">
         <div class="back-row"><button class="back-button" data-go="home">‹</button><div><p class="eyebrow">7 月 21 - 27 日</p><h1>本周诊断</h1></div></div>
-        <article class="diagnosis-hero"><div><p>最值得优先修复</p><h2>一次函数图像与斜率</h2><span>掌握度 58%</span></div><div class="ring"><b>58</b><small>%</small></div></article>
-        <p class="evidence-title">为什么是它？</p>
-        <article class="evidence-card"><span class="evidence-icon">1</span><div><b>同类题连续错 4 次</b><p>错误都集中在判断斜率正负与图像增减。</p></div></article>
-        <article class="evidence-card"><span class="evidence-icon">2</span><div><b>前置知识基本稳定</b><p>代数式化简正确率 92%，不用从头刷题。</p></div></article>
-        <article class="plan-card"><p class="eyebrow">建议的补强路径</p><div class="plan-line"><span>1</span><b>5 分钟</b><p>重新理解斜率与增减</p></div><div class="plan-line"><span>2</span><b>7 分钟</b><p>做 3 道由浅入深的题</p></div><div class="plan-line"><span>3</span><b>3 分钟</b><p>用变式题确认是否掌握</p></div></article>
-        <button class="primary-button full" data-go="learn">让 AI 再讲一遍</button>
+        <article class="diagnosis-hero"><div><p>最值得优先修复 · 已定位到子技能</p><h2>斜率符号 → 增减方向</h2><span>一次函数中的第 3 层卡点 · 掌握度 58%</span></div><div class="ring"><b>58</b><small>%</small></div></article>
+        <article class="diagnosis-levels"><p class="eyebrow">诊断定位链</p><div><span>1</span><p><b>变量与函数</b><small>学期板块</small></p></div><div><span>2</span><p><b>一次函数的图像</b><small>知识点</small></p></div><div class="is-focus"><span>3</span><p><b>斜率正负与增减方向的对应</b><small>子技能 · 当前卡点</small></p></div></article>
+        <p class="evidence-title">从解题步骤看到的证据</p>
+        <article class="evidence-card"><span class="evidence-icon">1</span><div><b>能读出斜率数值</b><p>4 次题目中都正确识别 m = -2 或 m = 3，说明不是公式不会。</p></div></article>
+        <article class="evidence-card"><span class="evidence-icon">2</span><div><b>把负斜率写成“y 增大”</b><p>错误稳定发生在“数值 → 变化方向”的转译步骤。</p></div></article>
+        <article class="evidence-card"><span class="evidence-icon">3</span><div><b>没有用图像反查</b><p>草稿中缺少“从左到右向下”的验证，属于可训练的解题策略。</p></div></article>
+        <button class="secondary-button full" data-go="skill-diagnosis">查看为什么会卡在这一步</button>
+        <article class="plan-card"><p class="eyebrow">建议的补强路径</p><div class="plan-line"><span>1</span><b>5 分钟</b><p>把“正负号”翻译成图像方向</p></div><div class="plan-line"><span>2</span><b>7 分钟</b><p>做 3 道只练这一小步的变式题</p></div><div class="plan-line"><span>3</span><b>3 分钟</b><p>用图像复核，确认已建立连接</p></div></article>
+        <button class="primary-button full" data-go="learn">让 AI 从这一步讲起</button>
+      </section>
+
+      <section class="screen student-screen" data-screen="skill-diagnosis" aria-label="短板深度诊断">
+        <div class="back-row"><button class="back-button" data-go="diagnosis">‹</button><div><p class="eyebrow">不是只看最后答案</p><h1>为什么会卡在这里？</h1></div></div>
+        <article class="deep-summary"><span>定位到第 3 层</span><h2>不是“一次函数不会”</h2><p>孩子会读出斜率，但还没有把斜率的正负稳定地翻译成 y 的变化方向。</p></article>
+        <section class="process-card"><p class="eyebrow">第 8 题的解题过程</p><div class="process-line good"><i>✓</i><p><b>读式子</b><small>识别 m = -2</small></p><span>正确</span></div><div class="process-line alert"><i>!</i><p><b>转译含义</b><small>写成“x 增大，y 增大”</small></p><span>卡点</span></div><div class="process-line watch"><i>?</i><p><b>图像复核</b><small>未画图或口头验证方向</small></p><span>缺失</span></div></section>
+        <article class="root-cause-card"><p class="eyebrow">深层原因假设 · 需要继续验证</p><h2>前置的“负数表示方向”连接不牢</h2><p>系统在七年级上册的正负数、坐标方向相关题中发现 6 次相似混淆。它是值得优先检查的前置缺口，<b>不是仅凭一次作业就下的结论。</b></p><div class="cause-confidence"><span>证据强度</span><b>中等</b><small>还需 2 道前置复测确认</small></div></article>
+        <article class="tip-card"><span>✓</span><p><b>这和“粗心”不同：</b>同一步反复出现相同方向错误，更像概念连接未建立；若步骤正确、数值偶发算错，才进入计算或习惯检查。</p></article>
+        <button class="primary-button full" data-go="learn">开始针对性讲解</button>
       </section>
 
       <section class="screen student-screen" data-screen="knowledge-map" aria-label="学期知识图谱">
@@ -152,7 +169,8 @@
         <div class="greeting-row"><div><p class="eyebrow">林知夏 · 初二（人教版）</p><h1>本周，重点很清楚</h1><p class="subtle">不需要加题量，花 15 分钟补对地方。</p></div></div>
         <article class="parent-hero"><div class="hero-top"><span class="tag blue">学习状态 · 稳步改善</span><span>本周 +6</span></div><div class="parent-score"><b>82</b><div><strong>学习健康度</strong><p>比上周更稳定</p></div></div><div class="bar-pairs"><span style="height:44%"></span><span style="height:54%"></span><span style="height:49%"></span><span style="height:66%"></span><span style="height:73%"></span><span class="today" style="height:82%"></span></div></article>
         <section class="section-heading"><div><p class="eyebrow">本周最该关注</p><h2>一次函数：斜率判断</h2></div><span class="time-pill">15 分钟</span></section>
-        <article class="focus-card clickable" data-go="report"><div class="focus-gauge"><b>58%</b></div><div><p><b>不是计算基础问题</b></p><p>4 次错误集中在同一个判断点，建议先听讲解再做 3 题。</p><span class="link-text">查看证据与方案 ›</span></div></article>
+        <article class="focus-card clickable" data-go="report"><div class="focus-gauge"><b>58%</b></div><div><p><b>不是计算基础问题</b></p><p>已定位到：一次函数 → 图像 → “斜率正负与增减方向”的对应。</p><span class="link-text">查看证据、深层原因与方案 ›</span></div></article>
+        <article class="calibration-card parent-calibration"><span class="calibration-icon">◎</span><div><p class="eyebrow">诊断会越用越准</p><b id="parentProfileSignal">36 份作业已建立孩子的学习画像</b><p>持续扫描会增加步骤与前置知识证据，帮助区分“不会、计算失误、习惯问题”。</p></div></article>
         <section class="section-heading compact"><div><p class="eyebrow">跨 36 份作业与测验</p><h2>全学期知识概览</h2></div><button class="text-button" data-go="parent-knowledge">查看图谱</button></section>
         <article class="parent-map-card clickable" data-go="parent-knowledge"><div class="mini-map"><span class="green-cell"></span><span class="green-cell"></span><span class="grey-cell"></span><span class="red-cell"></span><span class="green-cell"></span><span class="grey-cell"></span><span class="green-cell"></span><span class="red-cell"></span><span class="grey-cell"></span></div><div><p><b>12 个点已稳定掌握</b></p><p>绿色内容无需额外刷题，把时间留给 6 个红色薄弱点。</p></div><span class="chevron">›</span></article>
         <section class="section-heading compact"><h2>给您的建议</h2></section>
@@ -163,7 +181,7 @@
       <section class="screen parent-screen" data-screen="report" aria-label="家长周报">
         <div class="back-row"><button class="back-button" data-go="parent-home">‹</button><div><p class="eyebrow">第 12 周 · 7 月 21 - 27 日</p><h1>学习周报</h1></div><button class="share-button" aria-label="分享报告">↗</button></div>
         <article class="report-stats"><div><b>14</b><span>份作业</span></div><div><b>126</b><span>道题目</span></div><div><b>3</b><span>复习重点</span></div></article>
-        <article class="report-highlight"><p class="eyebrow">核心结论</p><h2>先修“斜率判断”，不要盲目加练。</h2><p>林知夏的代数式基础比较稳定；本周的 4 次同类错误都来自斜率正负与图像增减的对应关系。</p><button class="text-button" data-go="evidence">查看诊断证据 ›</button></article>
+        <article class="report-highlight"><p class="eyebrow">核心结论 · 定位到子技能</p><h2>先补“负斜率的方向含义”，不要盲目加练。</h2><p>林知夏能读出斜率数值；4 次同类错误都发生在“斜率正负 → 图像增减”的对应步骤。</p><button class="text-button" data-go="evidence">查看诊断证据与深层原因 ›</button></article>
         <section class="section-heading compact"><h2>周末复习安排</h2><span class="time-pill">共 30 分钟</span></section>
         <article class="schedule-card"><div><span class="schedule-day">周五</span><b>15 分钟</b><p>AI 讲解 + 3 道递进练习</p></div><div><span class="schedule-day">周日</span><b>15 分钟</b><p>2 道变式复测 + 错题回顾</p></div></article>
         <article class="note-card"><span>✦</span><p><b>值得肯定：</b>她的解题步骤更完整了，本周“最后一步计算失误”从 7 次降到 2 次。</p></article>
@@ -171,8 +189,11 @@
 
       <section class="screen parent-screen" data-screen="evidence" aria-label="家长诊断证据">
         <div class="back-row"><button class="back-button" data-go="report">‹</button><div><p class="eyebrow">为什么判断是它？</p><h1>诊断证据</h1></div></div>
-        <article class="evidence-summary"><span>证据充分</span><h2>一次函数：斜率判断</h2><p>诊断来自 4 次同类错误、2 次 AI 追问和 1 次复测，不是根据单题得出的结论。</p></article>
+        <article class="evidence-summary"><span>证据充分</span><h2>一次函数：斜率符号 → 增减方向</h2><p>诊断来自 4 次同类错误、2 次 AI 追问和 1 次复测，已定位到具体解题步骤，不是根据单题得出的结论。</p></article>
+        <article class="parent-diagnosis-path"><p class="eyebrow">短板定位层级</p><p><span>课程</span>变量与函数 <i>›</i> <span>知识点</span>一次函数图像 <i>›</i> <span class="path-focus">子技能</span>斜率正负与增减方向</p></article>
         <div class="timeline"><div class="timeline-item"><i></i><p><b>7 月 21 日 · 作业</b><br/>斜率为负，判断为“图像上升”。</p></div><div class="timeline-item"><i></i><p><b>7 月 24 日 · 小测</b><br/>同类题再次判断相反。</p></div><div class="timeline-item"><i></i><p><b>7 月 27 日 · AI 追问</b><br/>能读出斜率数值，但未把正负与变化方向关联。</p></div></div>
+        <article class="root-cause-card parent-root"><p class="eyebrow">深层原因倒推 · 当前为中等把握</p><h2>建议检查“负数表示方向”的前置连接</h2><p>系统在七年级上册的正负数与坐标方向题中发现 6 次相似混淆。它可能是当前卡点的来源；下一步会先用 2 道前置复测确认，避免把“偶发粗心”误判成知识缺口。</p></article>
+        <article class="attribution-card"><p class="eyebrow">系统如何区分原因</p><div><b>同一步反复同类错误</b><span>知识或子技能未建立</span></div><div><b>步骤正确、数值偶发不同</b><span>计算 / 抄写风险</span></div><div><b>会做但跳步、不复核</b><span>策略 / 习惯问题</span></div></article>
         <article class="tip-card large"><span>✓</span><p><b>下一步的验证标准：</b>完成讲解后，连续做对 2 道不同表述的变式题；隔 2 天再复测 1 道。</p></article>
         <button class="primary-button full" data-go="parent-home">返回家长首页</button>
       </section>

@@ -47,6 +47,8 @@ function updateKnowledgeMapAfterScan() {
   todayGraphUpdated = true;
   document.getElementById('studentMapVolume').textContent = '37 份作业';
   document.getElementById('parentMapVolume').textContent = '37 份作业与阶段测验';
+  document.getElementById('studentProfileSignal').textContent = '已从 37 份作业中学习 · 定位把握度提升';
+  document.getElementById('parentProfileSignal').textContent = '37 份作业已建立孩子的学习画像 · 证据持续增加';
   document.getElementById('studentLiveTitle').textContent = '今天 · 已更新 4 个节点';
   document.getElementById('studentLiveNote').textContent = '本次 12 道题已影响 4 个节点：函数图像的掌握信号下降；代入消元法维持稳定。系统会继续结合后续复测决定是否改变颜色。';
   document.getElementById('parentLiveTitle').textContent = '今天 · 已更新 4 个节点';
