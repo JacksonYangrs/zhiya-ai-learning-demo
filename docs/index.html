@@ -120,11 +120,16 @@
       </section>
 
       <section class="screen student-screen" data-screen="knowledge-map" aria-label="学期知识图谱">
-        <div class="back-row"><button class="back-button" data-go="home">‹</button><div><p class="eyebrow">七年级下册 · 数学</p><h1>我的知识图谱</h1></div><span class="status-good">36 份作业</span></div>
+        <div class="back-row"><button class="back-button" data-go="home">‹</button><div><p class="eyebrow">七年级下册 · 数学</p><h1>我的知识图谱</h1></div><span class="status-good" id="studentMapVolume">36 份作业</span></div>
         <article class="map-hero">
           <p class="eyebrow">本学期 28 个知识点</p>
           <div class="map-counts"><div class="mastered"><b>12</b><span>稳定掌握</span></div><div class="watch"><b>10</b><span>继续观察</span></div><div class="priority"><b>6</b><span>优先补强</span></div></div>
           <p>做对的题也会更新图谱。<b>绿色的知识点，暂时不用再刷。</b></p>
+        </article>
+        <article class="map-live-card">
+          <div class="map-live-head"><div><p class="eyebrow">每日图谱动态</p><h3 id="studentLiveTitle">近 7 天 · 2 个节点变化</h3></div><span class="live-pill">实时追踪</span></div>
+          <div class="impact-row"><div><span class="impact-icon soft">↗</span><p><b>代入消元法</b><small>近期掌握 91% · 稳定</small></p></div><div><span class="impact-icon warm">↘</span><p><b>函数图像</b><small>近期掌握 58% · 需补强</small></p></div></div>
+          <p class="live-note" id="studentLiveNote">每次录入先更新知识点的“掌握信号”；连续证据达到阈值后，节点才会改变绿、灰、红状态。</p>
         </article>
         <div class="legend"><span><i class="dot green-dot"></i>稳定掌握</span><span><i class="dot grey-dot"></i>继续观察</span><span><i class="dot red-dot"></i>优先补强</span></div>
         <section class="map-section"><div class="map-section-head"><div><p class="eyebrow">第一章</p><h2>二元一次方程组</h2></div><span class="chapter-score mastered-score">掌握良好</span></div><div class="knowledge-nodes"><button class="node green" data-node="二元一次方程组">二元一次方程组</button><button class="node green" data-node="代入消元法">代入消元法</button><button class="node green" data-node="加减消元法">加减消元法</button><button class="node grey" data-node="实际问题建模">实际问题建模</button></div></section>
@@ -174,7 +179,8 @@
 
       <section class="screen parent-screen" data-screen="parent-knowledge" aria-label="家长学期知识图谱">
         <div class="back-row"><button class="back-button" data-go="parent-home">‹</button><div><p class="eyebrow">林知夏 · 七年级下册数学</p><h1>全学期知识图谱</h1></div></div>
-        <article class="parent-map-hero"><p>已分析 <b>36 份作业与阶段测验</b></p><h2>把时间留给真正需要补的内容</h2><div class="parent-map-summary"><div><i class="dot green-dot"></i><b>12</b><span>可放心跳过</span></div><div><i class="dot grey-dot"></i><b>10</b><span>少量巩固</span></div><div><i class="dot red-dot"></i><b>6</b><span>优先投入</span></div></div></article>
+        <article class="parent-map-hero"><p>已分析 <b id="parentMapVolume">36 份作业与阶段测验</b></p><h2>把时间留给真正需要补的内容</h2><div class="parent-map-summary"><div><i class="dot green-dot"></i><b>12</b><span>可放心跳过</span></div><div><i class="dot grey-dot"></i><b>10</b><span>少量巩固</span></div><div><i class="dot red-dot"></i><b>6</b><span>优先投入</span></div></div></article>
+        <article class="parent-live-card"><div class="map-live-head"><div><p class="eyebrow">今天的图谱变化</p><h3 id="parentLiveTitle">近 7 天 · 2 个节点变化</h3></div><span class="live-pill">变化可追溯</span></div><div class="parent-live-list"><p><b>函数图像</b><span class="grey-mini">灰</span><i>→</i><span class="red-mini">红</span><small>连续 2 次判断斜率方向相反</small></p><p><b>加减消元法</b><span class="grey-mini">灰</span><i>→</i><span class="green-mini">绿</span><small>复测连续做对 3 次</small></p></div><p class="live-note" id="parentLiveNote">颜色不会因一题急跳：系统会保留每天的正确、错误、复测与时间权重，趋势变化比单次结果更重要。</p></article>
         <article class="parent-map-chapter"><div class="parent-map-chapter-head"><div><p class="eyebrow">第一章 · 二元一次方程组</p><h2>基础扎实</h2></div><span class="tag green">绿色为主</span></div><div class="map-strip"><span class="green-cell"></span><span class="green-cell"></span><span class="green-cell"></span><span class="grey-cell"></span></div><p>连续 9 次相关题正确。除“实际问题建模”外，不建议增加训练量。</p></article>
         <article class="parent-map-chapter"><div class="parent-map-chapter-head"><div><p class="eyebrow">第二章 · 相交线与平行线</p><h2>保持观察</h2></div><span class="tag blue">灰色为主</span></div><div class="map-strip"><span class="green-cell"></span><span class="grey-cell"></span><span class="grey-cell"></span><span class="red-cell"></span></div><p>判定与性质偶有混淆。下次阶段测验前做 3 道变式题即可。</p></article>
         <article class="parent-map-chapter priority-chapter"><div class="parent-map-chapter-head"><div><p class="eyebrow">第三章 · 变量与函数</p><h2>本周优先补强</h2></div><span class="tag orange">红色集中</span></div><div class="map-strip"><span class="grey-cell"></span><span class="red-cell"></span><span class="red-cell"></span><span class="red-cell"></span></div><p>函数图像、斜率判断与应用题连续出现错误，建议安排 3 次、每次 15 分钟的闭环训练。</p></article>

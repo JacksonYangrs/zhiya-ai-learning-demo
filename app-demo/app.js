@@ -4,6 +4,7 @@ const navItems = document.querySelectorAll('.nav-item');
 const toast = document.getElementById('toast');
 let activeRole = 'student';
 let toastTimer;
+let todayGraphUpdated = false;
 
 const roleHome = { student: 'home', parent: 'parent-home' };
 
@@ -41,11 +42,23 @@ function switchRole(role) {
   showScreen(roleHome[role]);
 }
 
+function updateKnowledgeMapAfterScan() {
+  if (todayGraphUpdated) return;
+  todayGraphUpdated = true;
+  document.getElementById('studentMapVolume').textContent = '37 份作业';
+  document.getElementById('parentMapVolume').textContent = '37 份作业与阶段测验';
+  document.getElementById('studentLiveTitle').textContent = '今天 · 已更新 4 个节点';
+  document.getElementById('studentLiveNote').textContent = '本次 12 道题已影响 4 个节点：函数图像的掌握信号下降；代入消元法维持稳定。系统会继续结合后续复测决定是否改变颜色。';
+  document.getElementById('parentLiveTitle').textContent = '今天 · 已更新 4 个节点';
+  document.getElementById('parentLiveNote').textContent = '新增作业中的 12 道题已进入图谱。单次结果先影响趋势；连续同类证据达到阈值后，颜色才会变动，避免一次考试带来误判。';
+}
+
 roleButtons.forEach((button) => button.addEventListener('click', () => switchRole(button.dataset.role)));
 document.querySelectorAll('[data-go]').forEach((button) => button.addEventListener('click', () => showScreen(button.dataset.go)));
 navItems.forEach((item) => item.addEventListener('click', () => showScreen(item.dataset.nav)));
 
 document.getElementById('startScan').addEventListener('click', () => {
+  updateKnowledgeMapAfterScan();
   showToast('识别完成：12 道题已切分，1 处需要你确认。');
   window.setTimeout(() => showScreen('scan'), 450);
 });
