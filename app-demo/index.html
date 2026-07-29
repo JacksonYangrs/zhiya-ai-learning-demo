@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f6f9fc" />
+    <title>知芽 - AI 学习助手</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell" aria-label="知芽 AI 学习助手演示应用">
+      <header class="topbar">
+        <a class="brand" href="#home" aria-label="返回首页">
+          <span class="brand-mark">芽</span>
+          <span>知芽</span>
+        </a>
+        <div class="role-switch" role="tablist" aria-label="切换角色">
+          <button class="role-button is-active" data-role="student" role="tab" aria-selected="true">学生</button>
+          <button class="role-button" data-role="parent" role="tab" aria-selected="false">家长</button>
+        </div>
+        <button class="avatar" id="profileButton" aria-label="查看个人资料">林</button>
+      </header>
+
+      <section class="screen student-screen is-active" data-screen="home" aria-label="学生首页">
+        <div class="greeting-row">
+          <div>
+            <p class="eyebrow">周三，7 月 29 日</p>
+            <h1>早上好，林知夏</h1>
+            <p class="subtle">今天用 15 分钟，补好一个小短板。</p>
+          </div>
+          <span class="streak">连续 6 天</span>
+        </div>
+
+        <article class="progress-card hero-card">
+          <div class="card-label">本周学习状态</div>
+          <div class="score-row"><strong>82</strong><span>分</span><em>比上周 +6</em></div>
+          <div class="meter"><span style="width:82%"></span></div>
+          <p>你已经修复了 <b>2 个</b> 常见错误，继续保持节奏。</p>
+        </article>
+
+        <section class="section-heading">
+          <div><p class="eyebrow">今日建议</p><h2>先补一次函数</h2></div>
+          <span class="time-pill">约 15 分钟</span>
+        </section>
+        <article class="lesson-card clickable" data-go="learn">
+          <div class="lesson-icon amber">x</div>
+          <div class="lesson-copy">
+            <h3>看懂“斜率”的变化</h3>
+            <p>从图像判断增减，是你本周最值得补的一点。</p>
+            <div class="mini-steps"><span>讲解 5 分钟</span><i></i><span>练习 3 题</span><i></i><span>小测 2 题</span></div>
+          </div>
+          <span class="chevron">›</span>
+        </article>
+
+        <section class="section-heading compact"><h2>随手录入</h2><button class="text-button" data-go="capture">查看全部</button></section>
+        <div class="action-grid">
+          <button class="quick-action capture-action" data-go="capture"><span class="action-icon blue">⌁</span><b>拍作业</b><small>AI 自动整理错题</small></button>
+          <button class="quick-action" data-go="diagnosis"><span class="action-icon lilac">⌘</span><b>我的诊断</b><small>本周发现 3 个重点</small></button>
+        </div>
+
+        <article class="insight-card clickable" data-go="diagnosis">
+          <span class="spark">✦</span>
+          <div><p class="eyebrow">AI 观察</p><b>你做题步骤很清楚</b><p>最后一两步容易因符号和计算失分。</p></div>
+          <span class="chevron">›</span>
+        </article>
+      </section>
+
+      <section class="screen student-screen" data-screen="capture" aria-label="拍照录入">
+        <div class="back-row"><button class="back-button" data-go="home">‹</button><div><p class="eyebrow">错题自动入库</p><h1>拍作业</h1></div></div>
+        <article class="capture-card">
+          <div class="camera-frame">
+            <div class="paper">
+              <span class="paper-title">八年级数学 - 一次函数</span>
+              <span class="paper-line long"></span><span class="paper-line"></span><span class="formula">y = 2x - 3</span>
+              <span class="paper-line long"></span><span class="paper-line short"></span>
+              <i class="teacher-mark">×</i>
+            </div>
+            <span class="scan-corner tl"></span><span class="scan-corner tr"></span><span class="scan-corner bl"></span><span class="scan-corner br"></span>
+          </div>
+          <p><b>照片已准备好</b><br/>AI 会自动识别题目、你的步骤和老师批注。</p>
+          <button class="primary-button full" id="startScan">开始识别</button>
+          <button class="secondary-button full" id="pickPhoto">从相册选择（演示）</button>
+        </article>
+        <div class="tip-card"><span>✓</span><p>不需要手动录题。看不清的地方，AI 才会请你确认。</p></div>
+      </section>
+
+      <section class="screen student-screen" data-screen="scan" aria-label="识别结果">
+        <div class="back-row"><button class="back-button" data-go="capture">‹</button><div><p class="eyebrow">已完成识别</p><h1>这次作业</h1></div><span class="status-good">已入库</span></div>
+        <article class="scan-summary"><div><span>12</span><small>道题目</small></div><i></i><div><span>3</span><small>待复习</small></div><i></i><div><span>1</span><small>需确认</small></div></article>
+        <article class="question-card">
+          <div class="question-head"><span class="question-number">第 8 题</span><span class="tag orange">重点关注</span></div>
+          <h3>已知一次函数 <em>y = 2x - 3</em>，判断 x 增大时 y 的变化。</h3>
+          <div class="answer-row"><span>你的作答</span><b>y 减小</b><span class="wrong">×</span></div>
+          <div class="reason-box"><span>✦</span><p><b>AI 发现：</b>你读对了式子，但把斜率 2 的正负判断反了。</p></div>
+          <button class="secondary-button full" data-go="correction">识别有误？帮 AI 确认</button>
+        </article>
+        <article class="question-card small-card"><span class="question-number">第 10 题</span><p>计算过程正确，只是最后一步把 18 写成了 16。</p><span class="tag green">计算小失误</span></article>
+        <button class="primary-button full" data-go="diagnosis">查看本周诊断</button>
+      </section>
+
+      <section class="screen student-screen" data-screen="correction" aria-label="帮助 AI 确认识别">
+        <div class="back-row"><button class="back-button" data-go="scan">‹</button><div><p class="eyebrow">仅需 1 秒</p><h1>帮 AI 认识你的书写</h1></div></div>
+        <article class="correction-card">
+          <div class="crop-letter">2</div>
+          <p class="question-prompt">这里是数字 <b>2</b> 还是 <b>7</b>？</p>
+          <div class="choice-row"><button class="choice is-selected" data-choice="2">2<span>这是 2</span></button><button class="choice" data-choice="7">7<span>这是 7</span></button></div>
+          <p class="fine-print">你的反馈会先用于改善自己的识别结果。你可随时撤销。</p>
+        </article>
+        <button class="primary-button full" id="saveCorrection">确认并保存</button>
+      </section>
+
+      <section class="screen student-screen" data-screen="diagnosis" aria-label="学习诊断">
+        <div class="back-row"><button class="back-button" data-go="home">‹</button><div><p class="eyebrow">7 月 21 - 27 日</p><h1>本周诊断</h1></div></div>
+        <article class="diagnosis-hero"><div><p>最值得优先修复</p><h2>一次函数图像与斜率</h2><span>掌握度 58%</span></div><div class="ring"><b>58</b><small>%</small></div></article>
+        <p class="evidence-title">为什么是它？</p>
+        <article class="evidence-card"><span class="evidence-icon">1</span><div><b>同类题连续错 4 次</b><p>错误都集中在判断斜率正负与图像增减。</p></div></article>
+        <article class="evidence-card"><span class="evidence-icon">2</span><div><b>前置知识基本稳定</b><p>代数式化简正确率 92%，不用从头刷题。</p></div></article>
+        <article class="plan-card"><p class="eyebrow">建议的补强路径</p><div class="plan-line"><span>1</span><b>5 分钟</b><p>重新理解斜率与增减</p></div><div class="plan-line"><span>2</span><b>7 分钟</b><p>做 3 道由浅入深的题</p></div><div class="plan-line"><span>3</span><b>3 分钟</b><p>用变式题确认是否掌握</p></div></article>
+        <button class="primary-button full" data-go="learn">让 AI 再讲一遍</button>
+      </section>
+
+      <section class="screen student-screen" data-screen="learn" aria-label="AI 讲解与训练">
+        <div class="back-row"><button class="back-button" data-go="diagnosis">‹</button><div><p class="eyebrow">AI 私教课 · 第 1 / 3 步</p><h1>先看变化方向</h1></div></div>
+        <article class="teacher-card">
+          <div class="teacher-avatar">芽</div><div><b>知芽老师</b><p>我们不急着做题，先用图像看懂它。</p></div><button class="sound-button" aria-label="播放讲解">◖</button>
+        </article>
+        <article class="graph-card"><div class="axis x-axis"></div><div class="axis y-axis"></div><div class="line-graph"></div><span class="point a">(-1, -5)</span><span class="point b">(2, 1)</span><p>斜率是 <b>2</b>，x 每增加 1，y 就增加 2。</p></article>
+        <article class="question-card practice-card"><p class="eyebrow">轮到你想一想</p><h3>如果斜率是 <em>-3</em>，x 增大时 y 会怎样？</h3><div class="answer-options"><button data-answer="wrong">y 增大</button><button data-answer="right">y 减小</button></div><p class="feedback-text" id="lessonFeedback">请选择一个答案。</p></article>
+        <button class="primary-button full" id="nextLesson">继续下一题</button>
+      </section>
+
+      <section class="screen parent-screen" data-screen="parent-home" aria-label="家长首页">
+        <div class="greeting-row"><div><p class="eyebrow">林知夏 · 初二（人教版）</p><h1>本周，重点很清楚</h1><p class="subtle">不需要加题量，花 15 分钟补对地方。</p></div></div>
+        <article class="parent-hero"><div class="hero-top"><span class="tag blue">学习状态 · 稳步改善</span><span>本周 +6</span></div><div class="parent-score"><b>82</b><div><strong>学习健康度</strong><p>比上周更稳定</p></div></div><div class="bar-pairs"><span style="height:44%"></span><span style="height:54%"></span><span style="height:49%"></span><span style="height:66%"></span><span style="height:73%"></span><span class="today" style="height:82%"></span></div></article>
+        <section class="section-heading"><div><p class="eyebrow">本周最该关注</p><h2>一次函数：斜率判断</h2></div><span class="time-pill">15 分钟</span></section>
+        <article class="focus-card clickable" data-go="report"><div class="focus-gauge"><b>58%</b></div><div><p><b>不是计算基础问题</b></p><p>4 次错误集中在同一个判断点，建议先听讲解再做 3 题。</p><span class="link-text">查看证据与方案 ›</span></div></article>
+        <section class="section-heading compact"><h2>给您的建议</h2></section>
+        <article class="parent-tip"><span>◎</span><p><b>今晚只要这样做：</b>请她完成“斜率与图像”小课，结束后问一句：“你觉得斜率为负时，图像会往哪里走？”</p></article>
+        <button class="primary-button full" data-go="report">查看完整周报</button>
+      </section>
+
+      <section class="screen parent-screen" data-screen="report" aria-label="家长周报">
+        <div class="back-row"><button class="back-button" data-go="parent-home">‹</button><div><p class="eyebrow">第 12 周 · 7 月 21 - 27 日</p><h1>学习周报</h1></div><button class="share-button" aria-label="分享报告">↗</button></div>
+        <article class="report-stats"><div><b>14</b><span>份作业</span></div><div><b>126</b><span>道题目</span></div><div><b>3</b><span>复习重点</span></div></article>
+        <article class="report-highlight"><p class="eyebrow">核心结论</p><h2>先修“斜率判断”，不要盲目加练。</h2><p>林知夏的代数式基础比较稳定；本周的 4 次同类错误都来自斜率正负与图像增减的对应关系。</p><button class="text-button" data-go="evidence">查看诊断证据 ›</button></article>
+        <section class="section-heading compact"><h2>周末复习安排</h2><span class="time-pill">共 30 分钟</span></section>
+        <article class="schedule-card"><div><span class="schedule-day">周五</span><b>15 分钟</b><p>AI 讲解 + 3 道递进练习</p></div><div><span class="schedule-day">周日</span><b>15 分钟</b><p>2 道变式复测 + 错题回顾</p></div></article>
+        <article class="note-card"><span>✦</span><p><b>值得肯定：</b>她的解题步骤更完整了，本周“最后一步计算失误”从 7 次降到 2 次。</p></article>
+      </section>
+
+      <section class="screen parent-screen" data-screen="evidence" aria-label="家长诊断证据">
+        <div class="back-row"><button class="back-button" data-go="report">‹</button><div><p class="eyebrow">为什么判断是它？</p><h1>诊断证据</h1></div></div>
+        <article class="evidence-summary"><span>证据充分</span><h2>一次函数：斜率判断</h2><p>诊断来自 4 次同类错误、2 次 AI 追问和 1 次复测，不是根据单题得出的结论。</p></article>
+        <div class="timeline"><div class="timeline-item"><i></i><p><b>7 月 21 日 · 作业</b><br/>斜率为负，判断为“图像上升”。</p></div><div class="timeline-item"><i></i><p><b>7 月 24 日 · 小测</b><br/>同类题再次判断相反。</p></div><div class="timeline-item"><i></i><p><b>7 月 27 日 · AI 追问</b><br/>能读出斜率数值，但未把正负与变化方向关联。</p></div></div>
+        <article class="tip-card large"><span>✓</span><p><b>下一步的验证标准：</b>完成讲解后，连续做对 2 道不同表述的变式题；隔 2 天再复测 1 道。</p></article>
+        <button class="primary-button full" data-go="parent-home">返回家长首页</button>
+      </section>
+
+      <nav class="bottom-nav" aria-label="主导航">
+        <button class="nav-item is-active" data-nav="home"><span>⌂</span><b>首页</b></button>
+        <button class="nav-item" data-nav="capture"><span>＋</span><b>录入</b></button>
+        <button class="nav-item" data-nav="diagnosis"><span>◌</span><b>诊断</b></button>
+        <button class="nav-item" data-nav="learn"><span>✦</span><b>AI 老师</b></button>
+      </nav>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
