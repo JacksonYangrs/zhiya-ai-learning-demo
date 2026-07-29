@@ -5,6 +5,7 @@ const root = process.cwd();
 const source = join(root, 'app-demo');
 const dist = join(root, 'dist');
 const server = join(dist, 'server');
+const pages = join(root, 'docs');
 
 const [html, css, javascript] = await Promise.all([
   readFile(join(source, 'index.html'), 'utf8'),
@@ -40,4 +41,12 @@ export default {
 await rm(dist, { recursive: true, force: true });
 await mkdir(server, { recursive: true });
 await writeFile(join(server, 'index.js'), worker);
+await rm(pages, { recursive: true, force: true });
+await mkdir(pages, { recursive: true });
+await Promise.all([
+  writeFile(join(pages, 'index.html'), html),
+  writeFile(join(pages, 'styles.css'), css),
+  writeFile(join(pages, 'app.js'), javascript),
+  writeFile(join(pages, '.nojekyll'), ''),
+]);
 console.log('Built mobile app demo for deployment.');
