@@ -24,7 +24,7 @@ function showScreen(target) {
   if (selected) selected.classList.add('is-active');
 
   if (activeRole === 'student') {
-    const navTarget = ['home', 'capture', 'diagnosis', 'learn'].includes(target) ? target : '';
+    const navTarget = ['home', 'capture', 'knowledge-map', 'learn'].includes(target) ? target : '';
     navItems.forEach((item) => item.classList.toggle('is-active', item.dataset.nav === navTarget));
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -81,3 +81,11 @@ document.getElementById('nextLesson').addEventListener('click', () => {
 document.getElementById('profileButton').addEventListener('click', () => {
   showToast(activeRole === 'student' ? '林知夏 · 初二（人教版）' : '正在查看林知夏的学习档案');
 });
+
+document.querySelectorAll('[data-node]').forEach((node) => node.addEventListener('click', () => {
+  const label = node.dataset.node;
+  const status = node.classList.contains('green') ? '近期掌握稳定，先不用安排额外练习。'
+    : node.classList.contains('red') ? '已列入本周优先补强清单。'
+      : '建议下次复测时用 1-2 道变式题确认。';
+  showToast(`${label}：${status}`);
+}));
