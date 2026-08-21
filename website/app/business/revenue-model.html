@@ -67,8 +67,6 @@
     .stat .v{font-size:17px;overflow-wrap:anywhere}
     .bar .name{width:64px}
     .fix-row input{width:72px}
-    .modal{padding:18px 16px;max-height:90vh}
-    .modal-mask{padding:12px}
   }
   .stat{border:1px solid var(--line);border-radius:12px;padding:14px}
   .stat .k{font-size:12px;color:var(--muted)}
@@ -95,6 +93,10 @@
   .modal .m-list li{margin:4px 0}
   .modal .m-formula{background:#f0f6ff;border:1px solid #cfe0ff;border-radius:10px;padding:10px 12px;font-size:14px;font-weight:700;color:var(--brand)}
   .modal .m-note{font-size:12px;color:var(--muted);background:#fafafa;border-left:3px solid var(--amber);padding:8px 10px;border-radius:6px}
+  @media(max-width:680px){
+    .modal{padding:18px 16px;max-height:90vh}
+    .modal-mask{padding:12px}
+  }
 </style>
 </head>
 <body>
