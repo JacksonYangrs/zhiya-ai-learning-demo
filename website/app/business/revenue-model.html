@@ -50,10 +50,13 @@
   .toggle{display:flex;align-items:center;gap:8px;font-size:13px}
   /* 固定成本结构 */
   .fix-breakdown{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fbfcfe}
-  .fix-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .fix-row{display:block;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13px}
   .fix-row:last-of-type{border-bottom:0}
-  .fix-row span{flex:1}
-  .fix-row input{width:84px;padding:5px 8px;border:1px solid var(--line);border-radius:8px;font-size:13px;text-align:right}
+  .fix-row .fr-label{display:block;margin-bottom:6px;color:var(--ink)}
+  .fix-row .fr-ctrl{display:flex;align-items:center;gap:10px}
+  .fix-row input[type=range]{flex:1;accent-color:#7c3aed;min-width:0}
+  .fix-row .val{color:#7c3aed;font-weight:700;font-size:13px;min-width:54px;text-align:right;white-space:nowrap}
+  .fix-row .val u{font-style:normal;text-decoration:none;color:var(--muted);font-weight:600;font-size:11px;margin-left:2px}
   .fix-total{margin-top:8px;font-size:13px;color:var(--muted)}
   .fix-total b{color:#7c3aed;font-size:16px}
   .fix-bar{display:flex;height:18px;border-radius:6px;overflow:hidden;margin-top:10px;background:#eef0f3}
@@ -66,7 +69,6 @@
     .res{grid-template-columns:repeat(2,1fr)}
     .stat .v{font-size:17px;overflow-wrap:anywhere}
     .bar .name{width:64px}
-    .fix-row input{width:72px}
   }
   .stat{border:1px solid var(--line);border-radius:12px;padding:14px}
   .stat .k{font-size:12px;color:var(--muted)}
@@ -146,12 +148,12 @@
       <div class="field" style="grid-column:1/-1">
         <label>固定成本结构（团队+云+合规，可逐项改，自动合计）</label>
         <div class="fix-breakdown">
-          <div class="fix-row"><span>研发团队（Flutter / 后端 / AI 网关）</span><input type="number" id="F0" value="80" min="0"></div>
-          <div class="fix-row"><span>教研 / 知识点图谱（KP 标注 / 课程）</span><input type="number" id="F1" value="30" min="0"></div>
-          <div class="fix-row"><span>合规与儿童数据保护（备案 / 审计）</span><input type="number" id="F2" value="15" min="0"></div>
-          <div class="fix-row"><span>云服务器与存储（网关+控制台+DB）</span><input type="number" id="F3" value="15" min="0"></div>
-          <div class="fix-row"><span>运营 / 客服 / 其他</span><input type="number" id="F4" value="15" min="0"></div>
-          <div class="fix-total">合计：¥<b id="fixTotal">155</b> 万/年</div>
+            <div class="fix-row"><span class="fr-label">研发团队（Flutter / 后端 / AI 网关）</span><div class="fr-ctrl"><input type="range" id="F0" min="0" max="50" step="1" value="25"><span class="val"><b id="lblF0">25</b><u>万</u></span></div></div>
+            <div class="fix-row"><span class="fr-label">教研 / 知识点图谱（KP 标注 / 课程）</span><div class="fr-ctrl"><input type="range" id="F1" min="0" max="50" step="1" value="8"><span class="val"><b id="lblF1">8</b><u>万</u></span></div></div>
+            <div class="fix-row"><span class="fr-label">合规与儿童数据保护（备案 / 审计）</span><div class="fr-ctrl"><input type="range" id="F2" min="0" max="50" step="1" value="5"><span class="val"><b id="lblF2">5</b><u>万</u></span></div></div>
+            <div class="fix-row"><span class="fr-label">云服务器与存储（网关+控制台+DB）</span><div class="fr-ctrl"><input type="range" id="F3" min="0" max="50" step="1" value="7"><span class="val"><b id="lblF3">7</b><u>万</u></span></div></div>
+            <div class="fix-row"><span class="fr-label">运营 / 客服 / 其他</span><div class="fr-ctrl"><input type="range" id="F4" min="0" max="50" step="1" value="5"><span class="val"><b id="lblF4">5</b><u>万</u></span></div></div>
+          <div class="fix-total">合计：¥<b id="fixTotal">50</b> 万/年</div>
           <div class="fix-bar" id="fixBar"></div>
           <div class="fix-legend" id="fixLegend"></div>
         </div>
@@ -297,6 +299,7 @@ function calc(){
   document.getElementById('lblVp').textContent=Vp;
   document.getElementById('lblVf').textContent=Vf;
   document.getElementById('fixTotal').textContent=Fwan;
+  FIX_IDS.forEach((id,i)=>{ document.getElementById('lblF'+i).textContent=document.getElementById(id).value; });
 
   document.getElementById('oUsers').textContent=Math.round(paid).toLocaleString()+' / '+Math.round(free).toLocaleString();
   document.getElementById('oRev').textContent=fmt(rev);

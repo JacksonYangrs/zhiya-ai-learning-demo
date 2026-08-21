@@ -1,5 +1,14 @@
-dist/
+website/build/
 node_modules/
-tmp/
-output/
+archive/tmp/
+reports/generated/
 .DS_Store
+.workbuddy/
+core/apps/*/node_modules/
+core/apps/*/.next/
+core/apps/*/.dart_tool/
+core/apps/*/build/
+core/apps/*/.env
+core/apps/*/.env.*
+!core/apps/*/.env.example
+*.apk
