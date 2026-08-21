@@ -163,10 +163,13 @@
       <button type="button" onclick="setPreset(30000,40,299,108,20)">30000用户（盈利）</button>
       <button type="button" onclick="setPreset(20000,40,299,30,6)">20000 + 自部署VLM</button>
     </div>
-    <div class="toggle" style="margin-top:12px">
-      <input type="checkbox" id="selfHost">
-      <label for="selfHost" style="margin:0;font-weight:600">开启「自部署 VLM」——把 AI 成本砍到约 28%（¥108→¥30，¥20→¥6）</label>
-    </div>
+      <div class="toggle" style="margin-top:12px">
+        <input type="checkbox" id="selfHost">
+        <label for="selfHost" style="margin:0;font-weight:600">开启「自部署 VLM」——把 AI 成本砍到约 28%（¥108→¥30，¥20→¥6）</label>
+      </div>
+      <div style="margin-top:8px">
+        <button class="link-btn" type="button" onclick="openSelfHostModal()">这 28% 是怎么算的？自部署一年花多少、能省多少 →</button>
+      </div>
     <div class="note">「自部署」对应架构里"核心环节迁云端自部署开源模型"的预留：到规模后不再全用第三方 API，自己跑视觉模型，单位成本大幅下降。</div>
   </div>
 
@@ -210,15 +213,40 @@
     </ul>
     <p class="m-sub">免费用户（限流）：轻量使用，约 <b>¥20 / 年</b>。</p>
     <p class="m-formula">变动总成本 = 付费用户 × Vp ＋ 免费用户 × Vf</p>
-    <p class="m-note">打开上方「自部署 VLM」开关，VLM 单价砍到约 28%，付费用户变动成本从 ¥108 降到 ≈ ¥30——这就是架构里"核心环节迁自部署"的财务意义。</p>
+        <p class="m-note">打开上方「自部署 VLM」开关，VLM 单价砍到约 28%，付费用户变动成本从 ¥108 降到 ≈ ¥30——这就是架构里"核心环节迁自部署"的财务意义。</p>
+      </div>
   </div>
-</div>
 
-<script>
+  <!-- 自部署成本推导弹框 -->
+  <div class="modal-mask" id="selfHostModal" onclick="if(event.target===this)closeSelfHostModal()">
+    <div class="modal">
+      <button class="modal-close" type="button" onclick="closeSelfHostModal()">×</button>
+      <h3>自部署大模型，成本怎么砍到约 28%？</h3>
+      <p><b>第三方按张收费，自部署改成"包月服务器"。</b>学生每扫一张作业，VLM 厂商（通义/智谱/OpenAI 这类）就按张收 ¥0.03，LLM 分析诊断另算——用得多付得多，像打车按里程。到规模后，自己租 GPU 跑开源视觉模型（Qwen-VL / InternVL 这类），不再按张给厂商付钱。</p>
+      <p class="m-sub">单位成本为什么能降到约 28%？</p>
+      <ul class="m-list">
+        <li>VLM 单张图：第三方 <b>¥0.03</b> → 自有算力摊薄后 ≈ <b id="shPerImg">¥0.0084</b>（×28%）</li>
+        <li>LLM 诊断 / 题组 / 周报：同理迁到自托管，单位成本同比例下降</li>
+        <li>前提：流量够大、服务器摊得薄；小用户时第三方反而更划算</li>
+      </ul>
+      <p class="m-sub">按你当前滑块假设，一年大概是这样：</p>
+      <ul class="m-list" id="shList">
+        <li>给第三方的 token 成本：<b id="shThird">—</b></li>
+        <li>自部署年成本（≈28%）：<b id="shSelf">—</b></li>
+        <li>每年省下来：<b id="shSave">—</b></li>
+        <li>平摊到每个总用户：<b id="shUnit">—</b></li>
+      </ul>
+      <p class="m-formula">自部署年成本 = 第三方 token 成本 × 28%</p>
+      <p class="m-note">提醒：自部署不是一开始就用。小流量时自建 GPU 闲置反而贵，且要自己运维模型、过儿童数据合规。所以架构把它作为"规模后的降本开关"——先全用第三方跑通闭环，用户涨上来再迁自部署。</p>
+    </div>
+  </div>
+
+  <script>
 const FIX_IDS = ['F0','F1','F2','F3','F4'];
 const FIX_LABELS = ['研发团队','教研/图谱','合规/数据保护','云服务器','运营/其他'];
 const FIX_COLORS = ['#2e73b8','#1d9b72','#d7862b','#7465bb','#e0556b'];
 function fmt(n){return '¥' + Math.round(n).toLocaleString('zh-CN');}
+function fmtWan(n){return fmt(n)+'（约 '+(n/10000).toFixed(1)+' 万）';}
 function getFixedWan(){let s=0;FIX_IDS.forEach(id=>{s+=(+document.getElementById(id).value||0);});return s;}
 function setPreset(n,c,p,vp,vf){
   document.getElementById('N').value=n; document.getElementById('C').value=c;
@@ -229,7 +257,21 @@ function setPreset(n,c,p,vp,vf){
 }
 function openVarModal(){document.getElementById('varModal').classList.add('open');}
 function closeVarModal(){document.getElementById('varModal').classList.remove('open');}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeVarModal();});
+function openSelfHostModal(){
+  const N=+document.getElementById('N').value;
+  const c=+document.getElementById('C').value/100;
+  const Vp=+document.getElementById('Vp').value;
+  const Vf=+document.getElementById('Vf').value;
+  const paid=N*c, free=N*(1-c);
+  const third=paid*Vp+free*Vf;
+  document.getElementById('shThird').textContent=fmtWan(third);
+  document.getElementById('shSelf').textContent=fmtWan(third*0.28);
+  document.getElementById('shSave').textContent=fmtWan(third*0.72);
+  document.getElementById('shUnit').textContent=fmt(third/N);
+  document.getElementById('selfHostModal').classList.add('open');
+}
+function closeSelfHostModal(){document.getElementById('selfHostModal').classList.remove('open');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeVarModal();closeSelfHostModal();}});
 function calc(){
   const N=+document.getElementById('N').value;
   const c=+document.getElementById('C').value/100;
