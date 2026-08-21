@@ -34,12 +34,23 @@
   .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
   .field .val{color:var(--brand);font-weight:700}
   input[type=range]{width:100%;accent-color:var(--brand)}
-  .row2{display:flex;gap:8px;align-items:center}
-  input[type=number]{width:110px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:14px}
+  .link-btn{border:0;background:none;color:var(--brand);font-size:12px;cursor:pointer;padding:0 0 0 6px;font-weight:600;text-decoration:underline}
   .presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
   .presets button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer}
   .presets button:hover{border-color:var(--brand);color:var(--brand)}
   .toggle{display:flex;align-items:center;gap:8px;font-size:13px}
+  /* 固定成本结构 */
+  .fix-breakdown{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fbfcfe}
+  .fix-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .fix-row:last-of-type{border-bottom:0}
+  .fix-row span{flex:1}
+  .fix-row input{width:84px;padding:5px 8px;border:1px solid var(--line);border-radius:8px;font-size:13px;text-align:right}
+  .fix-total{margin-top:8px;font-size:13px;color:var(--muted)}
+  .fix-total b{color:#7c3aed;font-size:16px}
+  .fix-bar{display:flex;height:18px;border-radius:6px;overflow:hidden;margin-top:10px;background:#eef0f3}
+  .fix-bar span{height:100%}
+  .fix-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:12px;color:var(--muted)}
+  .fix-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
   /* 结果 */
   .res{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
   @media(max-width:680px){.res{grid-template-columns:1fr}}
@@ -56,6 +67,18 @@
   .verdict{margin-top:14px;padding:12px 14px;border-radius:10px;background:#f0f6ff;border:1px solid #cfe0ff;font-size:14px}
   .verdict b{color:var(--brand)}
   .note{font-size:12px;color:var(--muted);margin-top:10px}
+  /* 弹框 */
+  .modal-mask{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+  .modal-mask.open{display:flex}
+  .modal{background:#fff;border-radius:16px;max-width:560px;width:100%;max-height:86vh;overflow:auto;padding:22px 24px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .modal h3{margin:0 0 10px;font-size:18px}
+  .modal-close{position:absolute;top:12px;right:14px;border:0;background:none;font-size:24px;line-height:1;color:var(--muted);cursor:pointer}
+  .modal p{font-size:14px;margin:10px 0}
+  .modal .m-sub{font-weight:700;color:var(--ink)}
+  .modal .m-list{font-size:13px;color:#374151;padding-left:18px;margin:8px 0}
+  .modal .m-list li{margin:4px 0}
+  .modal .m-formula{background:#f0f6ff;border:1px solid #cfe0ff;border-radius:10px;padding:10px 12px;font-size:14px;font-weight:700;color:var(--brand)}
+  .modal .m-note{font-size:12px;color:var(--muted);background:#fafafa;border-left:3px solid var(--amber);padding:8px 10px;border-radius:6px}
 </style>
 </head>
 <body>
@@ -94,23 +117,33 @@
         <input type="range" id="P" min="99" max="999" step="10" value="299">
       </div>
       <div class="field">
-        <label>付费用户 AI 年成本（变动）：¥ <span class="val" id="lblVp">108</span></label>
+        <label>付费用户 AI 年成本（变动）：¥ <span class="val" id="lblVp">108</span>
+          <button class="link-btn" type="button" onclick="openVarModal()">怎么算的？</button></label>
         <input type="range" id="Vp" min="10" max="300" step="2" value="108">
       </div>
       <div class="field">
         <label>免费用户 AI 年成本（限流后）：¥ <span class="val" id="lblVf">20</span></label>
         <input type="range" id="Vf" min="0" max="100" step="2" value="20">
       </div>
-      <div class="field">
-        <label>固定成本（团队+云）：¥ <span class="val" id="lblF">155</span> 万/年</label>
-        <input type="range" id="F" min="50" max="500" step="5" value="155">
+      <div class="field" style="grid-column:1/-1">
+        <label>固定成本结构（团队+云+合规，可逐项改，自动合计）</label>
+        <div class="fix-breakdown">
+          <div class="fix-row"><span>研发团队（Flutter / 后端 / AI 网关）</span><input type="number" id="F0" value="80" min="0"></div>
+          <div class="fix-row"><span>教研 / 知识点图谱（KP 标注 / 课程）</span><input type="number" id="F1" value="30" min="0"></div>
+          <div class="fix-row"><span>合规与儿童数据保护（备案 / 审计）</span><input type="number" id="F2" value="15" min="0"></div>
+          <div class="fix-row"><span>云服务器与存储（网关+控制台+DB）</span><input type="number" id="F3" value="15" min="0"></div>
+          <div class="fix-row"><span>运营 / 客服 / 其他</span><input type="number" id="F4" value="15" min="0"></div>
+          <div class="fix-total">合计：¥<b id="fixTotal">155</b> 万/年</div>
+          <div class="fix-bar" id="fixBar"></div>
+          <div class="fix-legend" id="fixLegend"></div>
+        </div>
       </div>
     </div>
     <div class="presets">
-      <button onclick="setPreset(2000,40,299,108,20,155)">2000用户（养团队期）</button>
-      <button onclick="setPreset(20000,40,299,108,20,155)">20000用户（临界）</button>
-      <button onclick="setPreset(30000,40,299,108,20,155)">30000用户（盈利）</button>
-      <button onclick="setPreset(20000,40,299,30,6,155)">20000 + 自部署VLM</button>
+      <button type="button" onclick="setPreset(2000,40,299,108,20)">2000用户（养团队期）</button>
+      <button type="button" onclick="setPreset(20000,40,299,108,20)">20000用户（临界）</button>
+      <button type="button" onclick="setPreset(30000,40,299,108,20)">30000用户（盈利）</button>
+      <button type="button" onclick="setPreset(20000,40,299,30,6)">20000 + 自部署VLM</button>
     </div>
     <div class="toggle" style="margin-top:12px">
       <input type="checkbox" id="selfHost">
@@ -140,31 +173,61 @@
   </div>
 </div>
 
+<!-- 变动成本推导弹框 -->
+<div class="modal-mask" id="varModal" onclick="if(event.target===this)closeVarModal()">
+  <div class="modal">
+    <button class="modal-close" type="button" onclick="closeVarModal()">×</button>
+    <h3>变动成本是怎么算出来的？</h3>
+    <p><b>变动成本 = 用一次花一次的钱。</b>学生每扫一次作业，我们就给 AI 公司付一次钱（VLM 看图 + LLM 分析）。用得多付得多，不扫不付——就像<b>打车按里程计费</b>，不是包月。</p>
+    <p class="m-sub">付费用户（无限扫）年变动成本 ≈ ¥108，按你定的假设一步步算：</p>
+    <ul class="m-list">
+      <li>VLM 看图单价：<b>¥0.03 / 张</b></li>
+      <li>每天扫描会话：<b>3 次</b>（你说的 100% DAU，天天用）</li>
+      <li>每次会话页数：<b>2 张</b>（多页连扫，一次扫三张也常见）</li>
+      <li>扫错 / 重扫系数：<b>×1.25</b>（手抖、拍糊、识别失败要重来）</li>
+      <li>→ 每人每年图片数 = 3 × 2 × 1.25 × 365 ≈ <b>2,737 张</b></li>
+      <li>VLM 费用 ≈ 2,737 × ¥0.03 ≈ <b>¥82</b></li>
+      <li>LLM 诊断 / 题组 / 周报 ≈ <b>¥26</b></li>
+      <li>合计 ≈ <b>¥108 / 付费用户 / 年</b></li>
+    </ul>
+    <p class="m-sub">免费用户（限流）：轻量使用，约 <b>¥20 / 年</b>。</p>
+    <p class="m-formula">变动总成本 = 付费用户 × Vp ＋ 免费用户 × Vf</p>
+    <p class="m-note">打开上方「自部署 VLM」开关，VLM 单价砍到约 28%，付费用户变动成本从 ¥108 降到 ≈ ¥30——这就是架构里"核心环节迁自部署"的财务意义。</p>
+  </div>
+</div>
+
 <script>
+const FIX_IDS = ['F0','F1','F2','F3','F4'];
+const FIX_LABELS = ['研发团队','教研/图谱','合规/数据保护','云服务器','运营/其他'];
+const FIX_COLORS = ['#2e73b8','#1d9b72','#d7862b','#7465bb','#e0556b'];
 function fmt(n){return '¥' + Math.round(n).toLocaleString('zh-CN');}
-function setPreset(n,c,p,vp,vf,f){
+function getFixedWan(){let s=0;FIX_IDS.forEach(id=>{s+=(+document.getElementById(id).value||0);});return s;}
+function setPreset(n,c,p,vp,vf){
   document.getElementById('N').value=n; document.getElementById('C').value=c;
   document.getElementById('P').value=p; document.getElementById('Vp').value=vp;
-  document.getElementById('Vf').value=vf; document.getElementById('F').value=f;
+  document.getElementById('Vf').value=vf;
   document.getElementById('selfHost').checked=(vp===30);
   calc();
 }
+function openVarModal(){document.getElementById('varModal').classList.add('open');}
+function closeVarModal(){document.getElementById('varModal').classList.remove('open');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeVarModal();});
 function calc(){
   const N=+document.getElementById('N').value;
   const c=+document.getElementById('C').value/100;
   const P=+document.getElementById('P').value;
   let Vp=+document.getElementById('Vp').value;
   let Vf=+document.getElementById('Vf').value;
-  const F=+document.getElementById('F').value*10000;
   const self=document.getElementById('selfHost').checked;
   if(self){Vp=Math.round(Vp*0.28); Vf=Math.round(Vf*0.28);}
+  const Fwan=getFixedWan(); const F=Fwan*10000;
 
   const paid=N*c, free=N*(1-c);
   const rev=paid*P;
   const varr=paid*Vp + free*Vf;
   const cost=varr+F;
   const profit=rev-cost;
-  const perUser=c*(P-Vp)-(1-c)*Vf; // 每总用户净贡献
+  const perUser=c*(P-Vp)-(1-c)*Vf;
   const denom=perUser;
   const breakN = denom>0 ? F/denom : Infinity;
 
@@ -173,7 +236,7 @@ function calc(){
   document.getElementById('lblP').textContent=P;
   document.getElementById('lblVp').textContent=Vp;
   document.getElementById('lblVf').textContent=Vf;
-  document.getElementById('lblF').textContent=document.getElementById('F').value;
+  document.getElementById('fixTotal').textContent=Fwan;
 
   document.getElementById('oUsers').textContent=Math.round(paid).toLocaleString()+' / '+Math.round(free).toLocaleString();
   document.getElementById('oRev').textContent=fmt(rev);
@@ -202,8 +265,21 @@ function calc(){
     }
   }
   document.getElementById('unitNote').textContent='每个总用户平均净贡献 ≈ '+fmt(perUser)+'（付费的赚 '+(P-Vp).toLocaleString()+'，免费的亏 '+Vf.toLocaleString()+'，按付费率混算）。固定成本被填平后，每多一个用户几乎纯赚这个数。';
+
+  // 固定成本结构条
+  const bar=document.getElementById('fixBar');
+  const legend=document.getElementById('fixLegend');
+  bar.innerHTML=FIX_IDS.map((id,i)=>{
+    const v=+document.getElementById(id).value||0;
+    const pct=Fwan>0?(v/Fwan*100):0;
+    return '<span style="width:'+pct+'%;background:'+FIX_COLORS[i]+'" title="'+FIX_LABELS[i]+': ¥'+v+'万"></span>';
+  }).join('');
+  legend.innerHTML=FIX_IDS.map((id,i)=>{
+    const v=+document.getElementById(id).value||0;
+    return '<span><i style="background:'+FIX_COLORS[i]+'"></i>'+FIX_LABELS[i]+' ¥'+v+'万</span>';
+  }).join('');
 }
-['N','C','P','Vp','Vf','F','selfHost'].forEach(id=>{
+['N','C','P','Vp','Vf','selfHost',...FIX_IDS].forEach(id=>{
   document.getElementById(id).addEventListener('input',calc);
 });
 calc();
