@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Buddy 赚钱模型（大白话版）</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1f2329; --muted:#6b7280;
+    --line:#e5e7eb; --brand:#2f6df6; --green:#16a34a; --red:#dc2626;
+    --amber:#d97706;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.6;padding:24px;}
+  .wrap{max-width:960px;margin:0 auto;}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px;
+        box-shadow:0 1px 2px rgba(0,0,0,.04);}
+  /* 流程图 */
+  .flow{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;justify-content:center}
+  .node{flex:1 1 180px;min-width:160px;border:1.5px solid var(--line);border-radius:12px;padding:14px;background:#fbfcfe}
+  .node .t{font-weight:700;font-size:14px;margin-bottom:6px}
+  .node .d{font-size:12px;color:var(--muted)}
+  .node.in{border-color:var(--brand)} .node.in .t{color:var(--brand)}
+  .node.var{border-color:var(--amber)} .node.var .t{color:var(--amber)}
+  .node.fix{border-color:#7c3aed} .node.fix .t{color:#7c3aed}
+  .node.net{border-color:var(--green)} .node.net .t{color:var(--green)}
+  .arrow{display:flex;align-items:center;color:var(--muted);font-size:20px;flex:0 0 auto}
+  /* 控件 */
+  .ctrl{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px}
+  @media(max-width:680px){.ctrl{grid-template-columns:1fr}.flow{flex-direction:column}.arrow{transform:rotate(90deg)}}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+  .field .val{color:var(--brand);font-weight:700}
+  input[type=range]{width:100%;accent-color:var(--brand)}
+  .row2{display:flex;gap:8px;align-items:center}
+  input[type=number]{width:110px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:14px}
+  .presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .presets button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer}
+  .presets button:hover{border-color:var(--brand);color:var(--brand)}
+  .toggle{display:flex;align-items:center;gap:8px;font-size:13px}
+  /* 结果 */
+  .res{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:680px){.res{grid-template-columns:1fr}}
+  .stat{border:1px solid var(--line);border-radius:12px;padding:14px}
+  .stat .k{font-size:12px;color:var(--muted)}
+  .stat .v{font-size:20px;font-weight:800;margin-top:4px}
+  .profit-pos{color:var(--green)} .profit-neg{color:var(--red)}
+  .bars{margin-top:14px}
+  .bar{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:12px}
+  .bar .name{width:84px;color:var(--muted)}
+  .bar .track{flex:1;background:#eef0f3;border-radius:6px;height:18px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:6px}
+  .fill.rev{background:var(--brand)} .fill.var{background:var(--amber)} .fill.fix{background:#7c3aed}
+  .verdict{margin-top:14px;padding:12px 14px;border-radius:10px;background:#f0f6ff;border:1px solid #cfe0ff;font-size:14px}
+  .verdict b{color:var(--brand)}
+  .note{font-size:12px;color:var(--muted);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Study Buddy 赚钱模型（大白话版）</h1>
+  <div class="sub">拖动下面的滑块，实时看「收多少钱 / 花多少钱 / 赚还是亏」。所有数字都能调。</div>
+
+  <!-- 大白话赚钱流程图 -->
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:12px">① 大白话赚钱流程图</div>
+    <div class="flow">
+      <div class="node in"><div class="t">学生付钱（收入）</div><div class="d">每年订阅 ¥299，付费的才付</div></div>
+      <div class="arrow">→</div>
+      <div class="node var"><div class="t">我们付 AI（变动成本）</div><div class="d">学生每扫一次作业，给 AI 公司付一次钱。用得多付得多</div></div>
+      <div class="arrow">→</div>
+      <div class="node fix"><div class="t">养团队+云（固定成本）</div><div class="d">开发/教研/合规工资 + 服务器，不管用不用都要付</div></div>
+      <div class="arrow">→</div>
+      <div class="node net"><div class="t">净赚 = 收 − 付AI − 养团队</div><div class="d">正数赚钱，负数亏钱</div></div>
+    </div>
+  </div>
+
+  <!-- 控件 -->
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:14px">② 拖动调节（单位都标清楚了）</div>
+    <div class="ctrl">
+      <div class="field">
+        <label>总用户数：<span class="val" id="lblN">20,000</span></label>
+        <input type="range" id="N" min="1000" max="100000" step="1000" value="20000">
+      </div>
+      <div class="field">
+        <label>付费率：<span class="val" id="lblC">40</span> %</label>
+        <input type="range" id="C" min="5" max="100" step="1" value="40">
+      </div>
+      <div class="field">
+        <label>年订阅价：¥ <span class="val" id="lblP">299</span></label>
+        <input type="range" id="P" min="99" max="999" step="10" value="299">
+      </div>
+      <div class="field">
+        <label>付费用户 AI 年成本（变动）：¥ <span class="val" id="lblVp">108</span></label>
+        <input type="range" id="Vp" min="10" max="300" step="2" value="108">
+      </div>
+      <div class="field">
+        <label>免费用户 AI 年成本（限流后）：¥ <span class="val" id="lblVf">20</span></label>
+        <input type="range" id="Vf" min="0" max="100" step="2" value="20">
+      </div>
+      <div class="field">
+        <label>固定成本（团队+云）：¥ <span class="val" id="lblF">155</span> 万/年</label>
+        <input type="range" id="F" min="50" max="500" step="5" value="155">
+      </div>
+    </div>
+    <div class="presets">
+      <button onclick="setPreset(2000,40,299,108,20,155)">2000用户（养团队期）</button>
+      <button onclick="setPreset(20000,40,299,108,20,155)">20000用户（临界）</button>
+      <button onclick="setPreset(30000,40,299,108,20,155)">30000用户（盈利）</button>
+      <button onclick="setPreset(20000,40,299,30,6,155)">20000 + 自部署VLM</button>
+    </div>
+    <div class="toggle" style="margin-top:12px">
+      <input type="checkbox" id="selfHost">
+      <label for="selfHost" style="margin:0;font-weight:600">开启「自部署 VLM」——把 AI 成本砍到约 28%（¥108→¥30，¥20→¥6）</label>
+    </div>
+    <div class="note">「自部署」对应架构里"核心环节迁云端自部署开源模型"的预留：到规模后不再全用第三方 API，自己跑视觉模型，单位成本大幅下降。</div>
+  </div>
+
+  <!-- 结果 -->
+  <div class="card">
+    <div style="font-weight:700;margin-bottom:14px">③ 实时结果</div>
+    <div class="res">
+      <div class="stat"><div class="k">付费用户 / 免费用户</div><div class="v" id="oUsers">—</div></div>
+      <div class="stat"><div class="k">年营收</div><div class="v" id="oRev">—</div></div>
+      <div class="stat"><div class="k">总成本（变动+固定）</div><div class="v" id="oCost">—</div></div>
+      <div class="stat"><div class="k">其中：AI 变动成本</div><div class="v" id="oVar">—</div></div>
+      <div class="stat"><div class="k">其中：固定成本</div><div class="v" id="oFix">—</div></div>
+      <div class="stat"><div class="k">年利润</div><div class="v" id="oProfit">—</div></div>
+    </div>
+    <div class="bars">
+      <div class="bar"><span class="name">营收</span><div class="track"><div class="fill rev" id="bRev"></div></div></div>
+      <div class="bar"><span class="name">AI变动</span><div class="track"><div class="fill var" id="bVar"></div></div></div>
+      <div class="bar"><span class="name">固定</span><div class="track"><div class="fill fix" id="bFix"></div></div></div>
+    </div>
+    <div class="verdict" id="verdict">—</div>
+    <div class="note" id="unitNote">—</div>
+  </div>
+</div>
+
+<script>
+function fmt(n){return '¥' + Math.round(n).toLocaleString('zh-CN');}
+function setPreset(n,c,p,vp,vf,f){
+  document.getElementById('N').value=n; document.getElementById('C').value=c;
+  document.getElementById('P').value=p; document.getElementById('Vp').value=vp;
+  document.getElementById('Vf').value=vf; document.getElementById('F').value=f;
+  document.getElementById('selfHost').checked=(vp===30);
+  calc();
+}
+function calc(){
+  const N=+document.getElementById('N').value;
+  const c=+document.getElementById('C').value/100;
+  const P=+document.getElementById('P').value;
+  let Vp=+document.getElementById('Vp').value;
+  let Vf=+document.getElementById('Vf').value;
+  const F=+document.getElementById('F').value*10000;
+  const self=document.getElementById('selfHost').checked;
+  if(self){Vp=Math.round(Vp*0.28); Vf=Math.round(Vf*0.28);}
+
+  const paid=N*c, free=N*(1-c);
+  const rev=paid*P;
+  const varr=paid*Vp + free*Vf;
+  const cost=varr+F;
+  const profit=rev-cost;
+  const perUser=c*(P-Vp)-(1-c)*Vf; // 每总用户净贡献
+  const denom=perUser;
+  const breakN = denom>0 ? F/denom : Infinity;
+
+  document.getElementById('lblN').textContent=N.toLocaleString();
+  document.getElementById('lblC').textContent=(c*100);
+  document.getElementById('lblP').textContent=P;
+  document.getElementById('lblVp').textContent=Vp;
+  document.getElementById('lblVf').textContent=Vf;
+  document.getElementById('lblF').textContent=document.getElementById('F').value;
+
+  document.getElementById('oUsers').textContent=Math.round(paid).toLocaleString()+' / '+Math.round(free).toLocaleString();
+  document.getElementById('oRev').textContent=fmt(rev);
+  document.getElementById('oCost').textContent=fmt(cost);
+  document.getElementById('oVar').textContent=fmt(varr);
+  document.getElementById('oFix').textContent=fmt(F);
+  const pe=document.getElementById('oProfit');
+  pe.textContent=(profit>=0?'+':'−')+fmt(Math.abs(profit));
+  pe.className='v '+(profit>=0?'profit-pos':'profit-neg');
+
+  const maxv=Math.max(rev,varr,F);
+  document.getElementById('bRev').style.width=(rev/maxv*100)+'%';
+  document.getElementById('bVar').style.width=(varr/maxv*100)+'%';
+  document.getElementById('bFix').style.width=(F/maxv*100)+'%';
+
+  const v=document.getElementById('verdict');
+  if(breakN===Infinity){
+    v.innerHTML='当前假设下每多一个用户都在亏钱（付费贡献填不满免费用户的消耗），怎么都打不平 —— 要么提价、要么限流免费层、要么降 AI 成本。';
+  } else {
+    const bn=Math.round(breakN);
+    if(N>=bn){
+      v.innerHTML='按当前假设，<b>已经过打平线</b>。打平只需约 <b>'+bn.toLocaleString()+'</b> 总用户，现在 '+N.toLocaleString()+' 用户，'+'年赚 <b>'+(profit>=0?'+':'−')+fmt(Math.abs(profit))+'</b>。';
+    } else {
+      const gap=bn-N;
+      v.innerHTML='按当前假设，打平需要约 <b>'+bn.toLocaleString()+'</b> 总用户；现在只有 '+N.toLocaleString()+'，还差 <b>'+gap.toLocaleString()+'</b> 用户才不亏（现亏 '+(profit>=0?'+':'−')+fmt(Math.abs(profit))+'）。';
+    }
+  }
+  document.getElementById('unitNote').textContent='每个总用户平均净贡献 ≈ '+fmt(perUser)+'（付费的赚 '+(P-Vp).toLocaleString()+'，免费的亏 '+Vf.toLocaleString()+'，按付费率混算）。固定成本被填平后，每多一个用户几乎纯赚这个数。';
+}
+['N','C','P','Vp','Vf','F','selfHost'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',calc);
+});
+calc();
+</script>
+</body>
+</html>
