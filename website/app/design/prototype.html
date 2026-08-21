@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习搭子 · MVP UI 原型</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background:linear-gradient(135deg,#16243f,#274066);
+    display:flex; justify-content:center; align-items:center;
+    min-height:100vh; gap:28px; padding:28px; flex-wrap:wrap;
+  }
+  .phone {
+    width:390px; height:844px; background:#0f1d33; border-radius:46px;
+    box-shadow:0 30px 70px rgba(0,0,0,.45); position:relative; overflow:hidden;
+    border:10px solid #0a1424;
+  }
+  .screen {
+    position:absolute; inset:0; display:none; flex-direction:column;
+    background:linear-gradient(165deg,#EAF3FF 0%,#DCEBFF 55%,#E9F1FB 100%);
+    padding:54px 20px 88px;
+  }
+  .screen.active { display:flex; }
+  .statusbar {
+    position:absolute; top:14px; left:0; right:0; display:flex; justify-content:space-between;
+    padding:0 30px; font-size:13px; font-weight:600; color:#1e3a5f; z-index:5;
+  }
+  .s-title { font-size:23px; font-weight:800; color:#16335a; margin-bottom:5px; letter-spacing:-.4px; }
+  .s-sub { font-size:13px; color:#5b7894; margin-bottom:18px; }
+  /* 宠物 */
+  .pet { width:104px; height:104px; flex:0 0 auto; }
+  .pet-row { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+  /* 玻璃气泡 */
+  .bubble {
+    background:rgba(255,255,255,.62); border:1px solid rgba(255,255,255,.7);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border-radius:16px 16px 16px 4px; padding:14px 16px;
+    font-size:15px; line-height:1.55; color:#16335a;
+    box-shadow:0 8px 24px rgba(30,80,150,.10); position:relative; max-width:262px;
+  }
+  .bubble small { display:block; color:#6b8aa8; font-size:12px; margin-top:6px; }
+  /* 玻璃卡片 */
+  .card {
+    background:rgba(255,255,255,.66); border:1px solid rgba(255,255,255,.7);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border-radius:16px; padding:16px; margin-bottom:12px;
+    box-shadow:0 8px 22px rgba(30,80,150,.08);
+  }
+  .card h4 { font-size:14px; color:#34557d; margin-bottom:8px; font-weight:700; }
+  .pill { display:inline-block; background:rgba(59,130,246,.12); color:#2563c9; font-size:11px;
+    padding:3px 9px; border-radius:20px; margin:3px 4px 0 0; font-weight:700; }
+  .pill.green { background:rgba(14,165,233,.14); color:#0a7fb5; }
+  .progress { height:8px; background:rgba(59,130,246,.14); border-radius:8px; overflow:hidden; margin-top:8px; }
+  .progress > i { display:block; height:100%; background:linear-gradient(90deg,#3B82F6,#37C8F0); }
+  /* 按钮 */
+  .btn {
+    background:linear-gradient(90deg,#3B82F6,#37C8F0); color:#fff; border:none;
+    border-radius:14px; padding:15px; font-size:16px; font-weight:800; width:100%;
+    box-shadow:0 10px 24px rgba(56,150,240,.32); cursor:pointer; margin-top:6px;
+  }
+  .btn.ghost { background:rgba(255,255,255,.55); color:#2563c9; border:1.5px solid rgba(59,130,246,.35); box-shadow:none; }
+  /* 领养选择 */
+  .pet-choose { display:flex; gap:10px; margin:8px 0 16px; }
+  .pet-opt { flex:1; border:1.5px solid rgba(59,130,246,.18); border-radius:16px; padding:10px 4px;
+    text-align:center; cursor:pointer; background:rgba(255,255,255,.5); transition:.15s; }
+  .pet-opt.sel { border-color:#3B82F6; background:rgba(59,130,246,.10); }
+  .pet-opt span { font-size:12px; color:#44658a; display:block; margin-top:4px; }
+  input.name { width:100%; border:1.5px solid rgba(59,130,246,.2); border-radius:12px; padding:13px;
+    font-size:15px; margin-bottom:12px; outline:none; background:rgba(255,255,255,.6); }
+  input.name:focus { border-color:#3B82F6; }
+  /* 导航 */
+  .nav { position:absolute; bottom:22px; left:0; right:0; display:flex; justify-content:center;
+    gap:8px; z-index:6; }
+  .nav i { width:8px; height:8px; border-radius:50%; background:rgba(59,130,246,.3); cursor:pointer; transition:.2s; }
+  .nav i.on { background:#3B82F6; width:22px; border-radius:6px; }
+  /* 相机 */
+  .cam { width:100%; height:300px; border-radius:18px; background:#0c1c33; position:relative;
+    overflow:hidden; margin-bottom:12px; border:1px solid rgba(255,255,255,.08); }
+  .cam .frame { position:absolute; inset:18px; border:2px dashed rgba(120,190,255,.55); border-radius:12px; }
+  .cam .scanline { position:absolute; left:18px; right:18px; height:2px;
+    background:#37C8F0; animation:scan 2.2s linear infinite; }
+  @keyframes scan { 0%{top:18px} 100%{top:calc(100% - 18px)} }
+  .thumbs { display:flex; gap:8px; }
+  .thumbs div { width:64px; height:84px; border-radius:10px; background:rgba(59,130,246,.14);
+    display:flex; align-items:center; justify-content:center; font-size:11px; color:#44658a; }
+  /* 补救 */
+  .choice { border:1.5px solid rgba(59,130,246,.18); border-radius:16px; padding:16px; margin-bottom:12px;
+    cursor:pointer; background:rgba(255,255,255,.62); backdrop-filter:blur(10px); transition:.15s; }
+  .choice:hover { border-color:#3B82F6; }
+  .choice b { font-size:15px; color:#16335a; }
+  .choice p { font-size:13px; color:#5b7894; margin-top:5px; }
+  .chip { display:inline-block; background:rgba(59,130,246,.12); color:#2563c9; font-size:12px;
+    padding:4px 10px; border-radius:20px; margin-right:6px; font-weight:700; }
+  .hint { font-size:12px; color:#6b8aa8; text-align:center; margin-top:10px; }
+  /* 侧边说明 */
+  .notes { width:300px; font-size:13px; color:#cdd9e8; line-height:1.7; }
+  .notes h3 { font-size:15px; color:#fff; margin-bottom:8px; }
+  .notes b { color:#7CC4FF; }
+  .legend { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:14px 16px; margin-bottom:14px; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><span>🔋 Wi-Fi</span></div>
+
+  <!-- S1 领养 -->
+  <div class="screen active" id="s1">
+    <div class="s-title">认识一下吧</div>
+    <div class="s-sub">我是来陪你学习的 AI 小伙伴，先选一个我，再给我起个名字</div>
+    <div class="pet-row">
+      <div id="petBig"></div>
+      <div class="bubble">挑一个你喜欢的样子吧，以后我就一直陪着你<small>领养后专属，不随大流</small></div>
+    </div>
+    <div class="pet-choose" id="petChoose"></div>
+    <input class="name" placeholder="给我起个名字，比如「小穹」「阿澈」…">
+    <div class="card">
+      <h4>你在读几年级？</h4>
+      <span class="pill">小五</span><span class="pill">小六</span><span class="pill">初一</span><span class="pill">初二</span><span class="pill">初三</span><span class="pill">高一</span><span class="pill">高二</span>
+      <h4 style="margin-top:12px">主要想练哪科？</h4>
+      <span class="pill green">数学</span><span class="pill">语文</span><span class="pill">英语</span>
+    </div>
+    <button class="btn" onclick="go(2)">这就是我啦 →</button>
+  </div>
+
+  <!-- S2 主屏 -->
+  <div class="screen" id="s2">
+    <div class="s-title">今天一起搞定它</div>
+    <div class="s-sub">「小穹」一直在你身边</div>
+    <div class="pet-row">
+      <div id="petHome"></div>
+      <div class="bubble">今天有啥作业？跟我说说～<small>点下面的卡片，或者直接告诉我</small></div>
+    </div>
+    <div class="card">
+      <h4>我们一起的第 12 天</h4>
+      <div class="progress"><i style="width:62%"></i></div>
+      <p style="font-size:12px;color:#5b7894;margin-top:6px">越相处，我越懂你</p>
+    </div>
+    <div class="card">
+      <h4>最近的小薄弱点</h4>
+      <span class="pill">移项变号规则 · 已补齐 80%</span>
+      <div class="progress"><i style="width:80%"></i></div>
+    </div>
+    <div class="card">
+      <h4>今天的状态</h4>
+      <p style="font-size:13px;color:#34557d">状态：有点累。没关系，慢慢来，错也没关系。</p>
+    </div>
+    <button class="btn" onclick="go(3)">约个学习时间 →</button>
+  </div>
+
+  <!-- S3 约定 -->
+  <div class="screen" id="s3">
+    <div class="s-title">我们约个时间</div>
+    <div class="s-sub">每天这个时间，我会主动来找你，提醒你写作业、陪你练</div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:54px;font-weight:800;color:#3B82F6">19:30</div>
+      <p style="font-size:13px;color:#5b7894;margin-top:4px">点一下可以调整</p>
+    </div>
+    <div class="card">
+      <h4>约好的事</h4>
+      <p style="font-size:13px;color:#34557d">每天 19:30，小穹会跳出来说「到啦，今天作业是啥？让我看看嘛」</p>
+    </div>
+    <button class="btn" onclick="go(4)">约定好了 →</button>
+  </div>
+
+  <!-- S4 到点跳出 -->
+  <div class="screen" id="s4">
+    <div class="s-title">到啦</div>
+    <div class="s-sub">小伙伴主动蹦出来了</div>
+    <div class="pet-row">
+      <div id="petAlert"></div>
+      <div class="bubble">到学习时间啦！今天作业是《一元一次方程》练习卷对吧？<b style="color:#2563c9">让我看看嘛～</b><small>点确认，我陪你一起扫</small></div>
+    </div>
+    <div class="card">
+      <h4>今日清单（你之前告诉我的）</h4>
+      <span class="pill">一元一次方程式 练习卷</span>
+      <span class="pill">英语 Unit3 单词</span>
+    </div>
+    <button class="btn" onclick="go(5)">好呀，开扫 →</button>
+    <button class="btn ghost" onclick="go(2)">今天先不扫了</button>
+  </div>
+
+  <!-- S5 连扫 -->
+  <div class="screen" id="s5">
+    <div class="s-title">扫作业</div>
+    <div class="s-sub">一页一页拍，可以连拍好几张，拍完确认</div>
+    <div class="cam">
+      <div class="frame"></div>
+      <div class="scanline"></div>
+    </div>
+    <p style="font-size:12px;color:#5b7894;margin-bottom:8px">已拍 3 张（还能继续拍）</p>
+    <div class="thumbs">
+      <div>第1页</div><div>第2页</div><div>第3页</div>
+    </div>
+    <button class="btn" onclick="go(6)" style="margin-top:16px">确认结束（3 张）</button>
+    <button class="btn ghost" onclick="go(4)">再补拍一张</button>
+  </div>
+
+  <!-- S6 聊天式评估 -->
+  <div class="screen" id="s6">
+    <div class="s-title">扫完啦</div>
+    <div class="s-sub">小穹陪你看结果</div>
+    <div class="pet-row">
+      <div id="petEval"></div>
+      <div class="bubble"><b>错没关系。</b>我们找到了 2 个<b style="color:#2563c9">很小的</b>薄弱点，补上就好<small>这次又更懂你一点</small></div>
+    </div>
+    <div class="card">
+      <h4>具体小薄弱点（颗粒度：一次 15 分钟能补齐）</h4>
+      <span class="pill">① 移项变号规则</span>
+      <span class="pill">② 去括号符号处理</span>
+      <p style="font-size:12px;color:#5b7894;margin-top:8px">不是「代数弱」这种大块，是能马上下手的小点</p>
+    </div>
+    <div class="card">
+      <h4>你的书写小习惯</h4>
+      <p style="font-size:13px;color:#34557d">你写「3」和「8」有点像，我已记住，下次更准</p>
+    </div>
+    <button class="btn" onclick="go(7)">去补齐第一个 →</button>
+  </div>
+
+  <!-- S7 补救路径 -->
+  <div class="screen" id="s7">
+    <div class="s-title">补齐「移项变号规则」</div>
+    <div class="s-sub">选一种方式，15 分钟内搞定它</div>
+    <div class="choice" onclick="alert('开始 15 分钟训练题组（小穹陪你练 + 变式复测）')">
+      <b>🅰 15 分钟训练题组</b>
+      <p>我陪你练 5 道递进题，最后 1 道变式复测。不会？我一步步提示，不直接给答案。</p>
+    </div>
+    <div class="choice" onclick="alert('播放微讲座：移项变号规则（选 3 分钟）')">
+      <b>🅱 听个小讲座</b>
+      <p>用伙伴口吻讲清楚这个规则，时长你定：</p>
+      <div style="margin-top:8px">
+        <span class="chip">5 分钟</span><span class="chip">3 分钟</span><span class="chip">1 分钟</span>
+      </div>
+    </div>
+    <p class="hint">补完我会复测，过了就标记「掌握」，并记到你的知识地图里</p>
+  </div>
+
+  <div class="nav" id="nav"></div>
+</div>
+
+<!-- 侧边说明 -->
+<div class="notes">
+  <div class="legend">
+    <h3>这一版想立住的「感觉」</h3>
+    <p><b>双向成就</b>：主屏「一起的第 12 天 / 越相处越懂你」，评估「又更懂你一点」——孩子也在训练 AI（纠错、标书写习惯）。</p>
+  </div>
+  <div class="legend">
+    <p><b>去焦虑</b>：评估开口就是「<b>错没关系</b>」，全程不出现「你又错了」。</p>
+  </div>
+  <div class="legend">
+    <p><b>足够小</b>：薄弱点直接是「移项变号规则」这种小颗粒，标注「一次 15 分钟能补齐」，拒绝「代数弱」大块。</p>
+  </div>
+  <div class="legend">
+    <p><b>懂全人</b>：主屏有「状态」、评估有「书写小习惯」——不止知识点。</p>
+  </div>
+  <div class="legend">
+    <h3>风格说明</h3>
+    <p>天空蓝主色 + 玻璃拟态质感，圆角收敛、宠物去婴儿腮红改有神眼神，贴近青春期学生的清爽克制调性，不幼稚。</p>
+  </div>
+  <div class="legend">
+    <h3>怎么看</h3>
+    <p>点手机底部的小圆点切换 7 个画面：领养 → 主屏 → 约定 → 跳出 → 连扫 → 评估 → 补救。</p>
+  </div>
+</div>
+
+<script>
+  const colors = { A:'#5B9DF5', B:'#38BDF8', C:'#818CF8' };
+  function petSVG(c){
+    return `<svg class="pet" viewBox="0 0 120 120">
+      <path d="M28 36 L46 60 L16 58 Z" fill="${c}"/>
+      <path d="M92 36 L74 60 L104 58 Z" fill="${c}"/>
+      <circle cx="60" cy="64" r="46" fill="${c}"/>
+      <ellipse cx="46" cy="48" rx="18" ry="24" fill="#ffffff" opacity=".22"/>
+      <circle cx="46" cy="62" r="6.5" fill="#1b2b3a"/>
+      <circle cx="74" cy="62" r="6.5" fill="#1b2b3a"/>
+      <circle cx="48.5" cy="59.5" r="2.2" fill="#fff"/>
+      <circle cx="76.5" cy="59.5" r="2.2" fill="#fff"/>
+      <path d="M53 80 Q60 85 67 80" stroke="#1b2b3a" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    </svg>`;
+  }
+  const choose = document.getElementById('petChoose');
+  ['小穹','小汐','小澈'].forEach((n,i)=>{
+    const k = ['A','B','C'][i];
+    const d = document.createElement('div');
+    d.className = 'pet-opt' + (i===0?' sel':'');
+    d.innerHTML = petSVG(colors[k]) + `<span>${n}</span>`;
+    d.onclick = ()=>{ document.querySelectorAll('.pet-opt').forEach(x=>x.classList.remove('sel'));
+      d.classList.add('sel'); document.getElementById('petBig').innerHTML = petSVG(colors[k]); };
+    choose.appendChild(d);
+  });
+  document.getElementById('petBig').innerHTML = petSVG(colors.A);
+  document.getElementById('petHome').innerHTML = petSVG(colors.A);
+  document.getElementById('petAlert').innerHTML = petSVG(colors.A);
+  document.getElementById('petEval').innerHTML = petSVG(colors.A);
+
+  const total = 7;
+  const nav = document.getElementById('nav');
+  for(let i=1;i<=total;i++){ const d=document.createElement('i'); d.onclick=()=>go(i); nav.appendChild(d); }
+  function go(n){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('s'+n).classList.add('active');
+    [...nav.children].forEach((d,i)=>d.classList.toggle('on', i+1===n));
+  }
+  go(1);
+</script>
+</body>
+</html>
